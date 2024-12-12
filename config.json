@@ -295,11 +295,8 @@
         "services",
         "forms"
     ],
-    "include_do_nothing_tables": [
+    "exculded_do_nothing_tables": [
         "services"
-    ],
-    "included_do_update_tables": [
-        "forms"
     ],
     "exculded_delete_tables": [
         "forms",
