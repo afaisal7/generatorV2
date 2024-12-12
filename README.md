@@ -11,7 +11,7 @@ This file contains the configuration data required for the query generation proc
 - **Databases**: Connection details for multiple databases, including `host`, `database`, `user`, and `password`.
 - **Query Definitions**: Templates for queries associated with specific tables, including conditions, rollback conditions, excluded columns, and output file names.
 - **Ordered Tables**: A prioritized list of tables to ensure proper dependency handling during query generation.
-- **Excluded Tables**: Tables where specific actions (e.g., `DO NOTHING` or `DO NOT DELETE`) should be applied.
+- **Excluded Do Notiong Tables**: Tables where specific actions (e.g., `DO UPDATE`) should be applied.
 
 ### 2. `generator.py`
 This Python script implements the logic for query generation and saving. Key components include:
