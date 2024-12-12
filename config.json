@@ -1,0 +1,316 @@
+{
+    "databases": {
+        "config": {
+            "host": "config.db.ip",
+            "database": "config-service",
+            "user": "config",
+            "password": "config.db.pass"
+        },
+        "requests": {
+            "host": "request.db.ip",
+            "database": "requests-service",
+            "user": "requests",
+            "password": "request.db.pass"
+        },
+        "notifications": {
+            "host": "notifications.db.ip",
+            "database": "notifications-service",
+            "user": "notification",
+            "password": "notifications.db.pass"
+        }
+    },
+    "queries": {
+        "config_queries": [
+            {
+                "table_name": "forms",
+                "condition": "id = %s and deleted_at is null",
+                "rollback_condition": "id = %s",
+                "params": [
+                    "formId"
+                ],
+                "output_file": "forms.sql",
+                "exclude_columns": []
+            },
+            {
+                "table_name": "service_groups",
+                "condition": "id in (select service_group_id from services where id = %s) and deleted_at is null",
+                "rollback_condition": "",
+                "params": [
+                    "serviceId"
+                ],
+                "output_file": "service_groups.sql",
+                "exclude_columns": []
+            },
+            {
+                "table_name": "services",
+                "condition": "id = %s and deleted_at is null",
+                "rollback_condition": "",
+                "params": [
+                    "serviceId"
+                ],
+                "output_file": "services.sql",
+                "exclude_columns": []
+            },
+            {
+                "table_name": "form_fields",
+                "condition": "form_id = %s and deleted_at is null",
+                "rollback_condition": "form_id = %s",
+                "params": [
+                    "formId"
+                ],
+                "output_file": "form_fields.sql",
+                "exclude_columns": ["is_required", "max_length", "min_length", "reg_exp"]
+				
+            },
+            {
+                "table_name": "field_values",
+                "condition": "form_id = %s and deleted_at is null",
+                "rollback_condition": "form_id = %s",
+                "params": [
+                    "formId"
+                ],
+                "output_file": "field_values.sql",
+                "exclude_columns": []
+            },
+            {
+                "table_name": "subsidiary_form_fields",
+                "condition": "form_id = %s and deleted_at is null",
+                "rollback_condition": "form_id = %s",
+                "params": [
+                    "formId"
+                ],
+                "output_file": "subsidiary_form_fields.sql",
+                "exclude_columns": [
+                    "id"
+                ]
+            },
+            {
+                "table_name": "subsidiary_field_values",
+                "condition": "form_id = %s and deleted_at is null",
+                "rollback_condition": "form_id = %s",
+                "params": [
+                    "formId"
+                ],
+                "output_file": "subsidiary_field_values.sql",
+                "exclude_columns": [
+                    "id"
+                ]
+            },
+            {
+                "table_name": "component_properties",
+                "condition": "service_code = %s and deleted_at is null",
+                "rollback_condition": "service_code = %s",
+                "params": [
+                    "code"
+                ],
+                "output_file": "component_properties.sql",
+                "exclude_columns": []
+            },
+            {
+                "table_name": "component_events",
+                "condition": "service_code = %s and deleted_at is null",
+                "rollback_condition": "service_code = %s",
+                "params": [
+                    "code"
+                ],
+                "output_file": "component_events.sql",
+                "exclude_columns": []
+            },
+            {
+                "table_name": "actions",
+                "condition": "id in (select action_id from steps_actions where service_id = %s and deleted_at is null) and deleted_at is null",
+                
+                "params": [
+                    "serviceId"
+                ],
+                "output_file": "actions.sql",
+                "exclude_columns": []
+            },
+            {
+                "table_name": "steps",
+                "condition": "id in (select step_id from steps_services where service_id in (select id from services where code = %s and deleted_at is null ) and deleted_at is null) and deleted_at is null",
+                "params": [
+                    "code"
+                ],
+                "output_file": "steps.sql",
+                "exclude_columns": []
+            },
+            {
+                "table_name": "steps_actions",
+                "condition": "service_id = %s and deleted_at is null",
+                "rollback_condition": "service_id = %s",
+                "params": [
+                    "serviceId"
+                ],
+                "output_file": "steps_actions.sql",
+                "exclude_columns": []
+            },
+            {
+                "table_name": "steps_services",
+                "condition": "service_id = %s and deleted_at is null",
+                "rollback_condition": "service_id = %s",
+                "params": [
+                    "serviceId"
+                ],
+                "output_file": "steps_services.sql",
+                "exclude_columns": []
+            },
+            {
+                "table_name": "static_user",
+                "condition": "service_code = %s and deleted_at is null",
+                "rollback_condition": "service_code = %s",
+                "params": [
+                    "code"
+                ],
+                "output_file": "static_user.sql",
+                "exclude_columns": []
+            },
+            {
+                "table_name": "services_subsidiaries",
+                "condition": "service_id = %s and deleted_at is null",
+                "rollback_condition": "service_id = %s",
+                "params": [
+                    "serviceId"
+                ],
+                "output_file": "services_subsidiaries.sql",
+                "exclude_columns": [
+                    "id"
+                ]
+            },
+            {
+                "table_name": "field_types",
+                "condition": "name in (select field_type_name from form_fields where form_id = %s and deleted_at is null) and deleted_at is null",
+                
+                "params": [
+                    "formId"
+                ],
+                "output_file": "field_types.sql",
+                "exclude_columns": []
+            },
+            {
+                "table_name": "properties",
+                "condition": "type in (select name from field_types where name in (select field_type_name from form_fields where form_id = %s and deleted_at is null)) and deleted_at is null",
+                "params": [
+                    "formId"
+                ],
+                "output_file": "properties.sql",
+                "exclude_columns": []
+            },
+            {
+                "table_name": "field_types_properties",
+                "condition": "field_type_name in (select field_type_name from form_fields where form_id = %s and deleted_at is null) and deleted_at is null",
+                "params": [
+                    "formId"
+                ],
+                "output_file": "field_types_properties.sql",
+                "exclude_columns": []
+            },
+            {
+                "table_name": "business_rules",
+                "condition": "service_id = %s and deleted_at is null",
+                "rollback_condition": "service_id = %s",
+                "params": [
+                    "serviceId"
+                ],
+                "output_file": "business_rules.sql",
+                "exclude_columns": []
+            },
+            {
+                "table_name": "steps_permissions",
+                "condition": "service_id = %s and deleted_at is null",
+                "rollback_condition": "service_id = %s",
+                "params": [
+                    "serviceId"
+                ],
+                "output_file": "steps_permissions.sql",
+                "exclude_columns": []
+            },
+            {
+                "table_name": "lov_extension",
+                "condition": "service_code = %s and deleted_at is null",
+                "rollback_condition": "service_code = %s",
+                "params": [
+                    "code"
+                ],
+                "output_file": "lov_extension.sql",
+                "exclude_columns": []
+            },
+            {
+                "table_name": "service_permissions",
+                "condition": "service_code = %s and deleted_at is null",
+                "rollback_condition": "service_code = %s",
+                "params": [
+                    "code"
+                ],
+                "output_file": "service_permissions.sql",
+                "exclude_columns": ["id"]
+            }
+        ],
+        "requests_queries": [
+            {
+                "table_name": "request_step_events",
+                "condition": "service_code = %s and deleted_at is null",
+                "rollback_condition": "service_code = %s",
+                "params": [
+                    "code"
+                ],
+                "output_file": "request_step_events.sql",
+                "exclude_columns": []
+            }
+        ],
+        "notifications_queries": [
+            {
+                "table_name": "templates",
+                "condition": "template_key LIKE lower(%s)",
+                "params": [
+                    "code"
+                ],
+                "like_condition": true,
+                "output_file": "templates.sql",
+                "exclude_columns": []
+            },
+            {
+                "table_name": "template_placeholders",
+                "condition": "template_id IN (SELECT id FROM templates WHERE template_key LIKE lower(%s))",
+                "params": [
+                    "code"
+                ],
+                "like_condition": true,
+                "output_file": "template_placeholders.sql",
+                "exclude_columns": []
+            }
+        ]
+    },
+    "ordered_tables": [
+        "subsidiary_field_values",
+        "field_values",
+        "subsidiary_form_fields",
+        "form_fields",
+        "services_subsidiaries",
+        "component_properties",
+        "component_events",
+        "steps_actions",
+        "steps_services",
+        "steps",
+        "services",
+        "forms"
+    ],
+    "include_do_nothing_tables": [
+        "services"
+    ],
+    "included_do_update_tables": [
+        "forms"
+    ],
+    "exculded_delete_tables": [
+        "forms",
+        "service_groups",
+        "services",
+        "steps",
+        "actions",
+        "events",
+        "subsidiary_form_fields_old",
+        "field_types",
+        "properties",
+        "field_types_properties"
+    ]
+}
